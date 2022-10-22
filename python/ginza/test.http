@@ -1,0 +1,22 @@
+###
+# ginzaで解析する(1文)
+POST http://localhost:8000/sentence HTTP/1.1
+Content-Type: application/json
+
+{
+    "sentence" :"私はりんごを食べる",
+    "description":""
+}
+
+###
+# ginzaで解析する(複数文)
+POST http://localhost:8000/sentences HTTP/1.1
+Content-Type: application/json
+
+{
+    "sentences" :[
+        "私はりんごを食べる",
+        "自然言語処理は楽しい"
+    ],
+    "description":""
+}
