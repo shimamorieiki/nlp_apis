@@ -1,0 +1,9 @@
+version: '3'
+services:
+  cabocha:
+    build: .
+    command: uvicorn main:app --reload
+    volumes:
+      - .:/code
+    ports:
+      - "10132:8000"
