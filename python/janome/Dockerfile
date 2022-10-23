@@ -18,15 +18,6 @@ ENV LANG ja_JP.UTF-8
 ENV LC_CTYPE ja_JP.UTF-8
 RUN localedef -f UTF-8 -i ja_JP ja_JP.utf8
 
-# clean up all temporary files 
-RUN apt-get clean &&\
-    apt-get autoclean -y &&\
-    apt-get autoremove -y &&\
-    apt-get clean &&\
-    rm -rf /tmp/* /var/tmp/* &&\
-    rm -rf /var/lib/apt/lists/* &&\    
-    rm -f /etc/ssh/ssh_host_*
-
 # ユーザーを作成
 ARG UID=1000
 RUN useradd -m -u ${UID} docker
