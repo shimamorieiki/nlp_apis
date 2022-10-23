@@ -24,7 +24,7 @@ async def get_api_name():
     return {"api_name": "cabocha"}
 
 
-@app.post("/")
+@app.post("/sentence")
 async def post_sentence(sentense_model: SentenceModel):
     """_summary_
         Sentence型を受け取りそのまま返す
