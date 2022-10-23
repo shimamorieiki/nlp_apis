@@ -2,39 +2,13 @@
 Returns:
     _type_: _description_
 """
-from typing import Dict, List, Optional
+from typing import Dict, List
 from fastapi import FastAPI
-from pydantic import BaseModel
+from src.models.sentence_model import SentenceModel
+from src.models.sentences_model import SentencesModel
 
 
-from src.service.chasen_service import ChasenService
-
-
-class SentenceModel(BaseModel):
-    """_summary_
-        Sentenceクラス
-    Args:
-        BaseModel (_type_): _description_
-    """
-
-    # 解析対象の文
-    sentence: str
-    # 説明
-    description: Optional[str] = None
-
-
-class SentencesModel(BaseModel):
-    """_summary_
-        Sentenceクラス
-    Args:
-        BaseModel (_type_): _description_
-    """
-
-    # 解析対象の文のリスト
-    sentences: List[str]
-    # 説明
-    description: Optional[str] = None
-
+from src.services.chasen_service import ChasenService
 
 app = FastAPI()
 
