@@ -1,26 +1,26 @@
 version: '3'
 services:
-  # cabocha:
-  #   build: ./python/cabocha
-  #   command: uvicorn main:app --host 0.0.0.0 --reload
-  #   volumes:
-  #     - ./python/cabocha:/code/python/cabocha
-  #   ports:
-  #     - "10000:8000"
-  # chasen:
-  #   build: ./python/chasen
-  #   command: uvicorn main:app --host 0.0.0.0 --reload
-  #   volumes:
-  #     - ./python/chasen:/code/python/chasen
-  #   ports:
-  #     - "10001:8000"
-  # ginza:
-  #   build: ./python/ginza
-  #   command: uvicorn main:app --host 0.0.0.0 --reload
-  #   volumes:
-  #     - ./pyton/ginza:/code/python/ginza
-  #   ports:
-  #     - "10002:8000"
+  cabocha:
+    build: ./python/cabocha
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    volumes:
+      - ./python/cabocha:/code/python/cabocha
+    ports:
+      - "10000:8000"
+  chasen:
+    build: ./python/chasen
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    volumes:
+      - ./python/chasen:/code/python/chasen
+    ports:
+      - "10001:8000"
+  ginza:
+    build: ./python/ginza
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    volumes:
+      - ./pyton/ginza:/code/python/ginza
+    ports:
+      - "10002:8000"
   janome:
     build: ./python/janome
     command: uvicorn main:app --host 0.0.0.0 --reload
