@@ -18,7 +18,7 @@ services:
     build: ./python/ginza
     command: uvicorn main:app --host 0.0.0.0 --reload
     volumes:
-      - ./pyton/ginza:/code/python/ginza
+      - ./python/ginza:/code/python/ginza
     ports:
       - "10002:8000"
   janome:
@@ -37,7 +37,7 @@ services:
       - "10004:8000"
   kwja:
     build: ./python/kwja
-    command: uvicorn main:app --host 0.0.0.0 --reload
+    command: python3 -m uvicorn main:app --host 0.0.0.0 --reload
     volumes:
       - ./python/kwja:/code/python/kwja
     ports:
