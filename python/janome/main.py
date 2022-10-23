@@ -20,7 +20,7 @@ async def get_api_name():
     Returns:
         _type_: _description_
     """
-    return {"api_name": "ginza"}
+    return {"api_name": "janome"}
 
 
 @app.post("/sentence")
