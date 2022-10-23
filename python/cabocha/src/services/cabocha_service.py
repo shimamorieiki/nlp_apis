@@ -1,51 +1,94 @@
 """_summary_
 """
 
-from typing import Dict, List, Optional
-from src.morph_list.src.v3.morph_list import MorphListV3 as MorphList
-from src.morph_list.src.v3.morph import MorphV3 as Morph
+from typing import Dict, List
+import CaboCha as ca
 
 
 class CaboChaService:
     """_summary_"""
 
-    def morph_to_dict(
-        self, morph: Morph
-    ) -> Dict[str, str | int | List[str] | Optional[int]]:
+    def parse_sentence(self, sentence: str) -> List[Dict]:
         """_summary_
-            元のcabochaの要素のみを出力する
-        Args:
-            morph_list (MorphList): _description_
+        cabochaを使用して係り受け解析を行う(1文)
         """
-        return {
-            "midasi": morph.midasi,
-            "genkei": morph.genkei,
-            "yomi": morph.yomi,
-            "hatuon": morph.hatuon,
-            "hinsi": morph.hinsi,
-            "katuyou_type": morph.katuyou_type,
-            "katuyou_form": morph.katuyou_form,
-            "detail_large": morph.detail_large,
-            "detail_middle": morph.detail_middle,
-            "detail_small": morph.detail_small,
-            "bnst_id": morph.bnst_id,
-            "parent_id": morph.parent_id,
-        }
 
-    def to_original_dict(self, morph_list: MorphList):
+        cabocha_dtos: List[Dict] = []
+        bnst_id: str = "0"
+        bnst_parent_id: str = "0"
+        cabocha = ca.Parser("")
+
+        try:  # パースする
+            tree = cabocha.parse(sentence)
+            parsed_items_list: List[str] = tree.toString(
+                ca.CABOCHA_FORMAT_LATTICE
+            ).split("\n")
+        except Exception as ex:
+            raise ex
+
+        for parsed_items in parsed_items_list:
+
+            if parsed_items == "EOS" or len(parsed_items) == 0:
+                # EOS要素or空要素のときは何もしない
+                continue
+
+            if parsed_items[0] == "*":
+                # "* 3 4D 0/0 1.985818"
+                bnst_info = parsed_items.split(" ")
+                bnst_id = bnst_info[1]
+                bnst_parent_id = bnst_info[2][:-1]
+
+                continue
+
+            cabocha_dto_bnst_id = int(bnst_id)
+            cabocha_dto_parent_id = int(bnst_parent_id)
+
+            morph_info: List[str] = parsed_items.replace("\t", ",").split(",")
+
+            if len(morph_info) == 10:
+                cabocha_dict = {
+                    "midasi": morph_info[0],
+                    "hinsi": morph_info[1],
+                    "detail_large": morph_info[2],
+                    "detail_middle": morph_info[3],
+                    "detail_small": morph_info[4],
+                    "katuyou_type": morph_info[5],
+                    "katuyou_form": morph_info[6],
+                    "genkei": morph_info[7],
+                    "yomi": morph_info[8],
+                    "hatuon": morph_info[9],
+                    "bnst_id": cabocha_dto_bnst_id,
+                    "parent_id": cabocha_dto_parent_id,
+                }
+                cabocha_dtos.append(cabocha_dict)
+
+            elif len(morph_info) == 8:
+                # 多分未定義語だと思うが要素が8つしか無いものがある
+                # ['エコーロケーション', '名詞', '固有名詞', '組織', '*', '*', '*', '*']
+                cabocha_dict = {
+                    "midasi": morph_info[0],
+                    "hinsi": morph_info[1],
+                    "detail_large": morph_info[2],
+                    "detail_middle": morph_info[3],
+                    "detail_small": morph_info[4],
+                    "katuyou_type": morph_info[5],
+                    "katuyou_form": morph_info[6],
+                    "genkei": morph_info[7],
+                    "bnst_id": cabocha_dto_bnst_id,
+                    "parent_id": cabocha_dto_parent_id,
+                    "yomi": None,
+                    "hatuon": None,
+                }
+                cabocha_dtos.append(cabocha_dict)
+
+        return cabocha_dtos
+
+    def parse_sentences(self, sentences: List[str]) -> List[List[Dict]]:
         """_summary_
-            MorphListをもともとCaboChaに存在する要素のdictに変換する
-        Args:
-            morph_list (MorphList): _description_
+        cabochaを使用して係り受け解析を行う(複数文)
         """
-        morph_dicts_list: List[Dict] = []
+        parsed_sentences: List[List[Dict]] = []
+        for sentence in sentences:
+            parsed_sentences.append(self.parse_sentence(sentence=sentence))
 
-        for morph in morph_list:
-            morph_dicts_list.append(self.morph_to_dict(morph))
-        return morph_dicts_list
-
-    def parse(self, target_sentence: str):
-        """_summary_"""
-        morph_list: MorphList = MorphList.from_str(input_sentence=target_sentence)
-        morph_list.print()
-        return self.to_original_dict(morph_list=morph_list)
+        return parsed_sentences

@@ -3,24 +3,11 @@
 Returns:
     _type_: _description_
 """
-from typing import Dict, List, Optional
+from typing import Dict, List
 from fastapi import FastAPI
-from pydantic import BaseModel
+from src.models.sentence_model import SentenceModel
+from src.models.sentences_model import SentencesModel
 from src.services.cabocha_service import CaboChaService
-
-
-class SentenceModel(BaseModel):
-    """_summary_
-        Sentenceクラス
-    Args:
-        BaseModel (_type_): _description_
-    """
-
-    # 解析対象の文
-    sentence: str
-
-    # 説明
-    description: Optional[str] = None
 
 
 app = FastAPI()
@@ -46,8 +33,24 @@ async def post_sentence(sentense_model: SentenceModel):
     Returns:
         _type_: _description_
     """
-    cabocha_parsed: List[Dict] = CaboChaService().parse(
-        target_sentence=sentense_model.sentence
+    cabocha_parsed: List[Dict] = CaboChaService().parse_sentence(
+        sentence=sentense_model.sentence
     )
 
     return cabocha_parsed
+
+
+@app.post("/sentences")
+async def post_sentences(sentenses_model: SentencesModel):
+    """_summary_
+        Sentence型を受け取りそのまま返す
+    Args:
+        sentense (Sentence): _description_
+    Returns:
+        _type_: _description_
+    """
+    knp_parsed: List[List[Dict]] = CaboChaService().parse_sentences(
+        sentences=sentenses_model.sentences
+    )
+
+    return knp_parsed
