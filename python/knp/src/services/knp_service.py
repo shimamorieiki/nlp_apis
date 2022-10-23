@@ -37,7 +37,7 @@ class KNPService:
                     "katuyou1": mrph.katuyou1,
                     "katuyou2": mrph.katuyou2,
                     "imis": mrph.imis,
-                    "rename": mrph.repname,
+                    "repname": mrph.repname,
                     "bnst_id": bnst.bnst_id,
                     "parent_id": bnst.parent_id,
                     "dpndtype": bnst.dpndtype,
