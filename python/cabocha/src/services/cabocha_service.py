@@ -2,6 +2,7 @@
 """
 
 from typing import Dict, List
+
 import CaboCha as ca
 
 

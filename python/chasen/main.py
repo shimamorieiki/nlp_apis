@@ -3,11 +3,11 @@ Returns:
     _type_: _description_
 """
 from typing import Dict, List
+
 from fastapi import FastAPI
+
 from src.models.sentence_model import SentenceModel
 from src.models.sentences_model import SentencesModel
-
-
 from src.services.chasen_service import ChasenService
 
 app = FastAPI()

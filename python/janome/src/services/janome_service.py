@@ -2,6 +2,7 @@
 """
 
 from typing import Dict, List
+
 from janome.tokenizer import Tokenizer
 
 
