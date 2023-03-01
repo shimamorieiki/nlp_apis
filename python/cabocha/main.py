@@ -6,12 +6,20 @@ Returns:
 from typing import Dict, List
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.models.sentence_model import SentenceModel
 from src.models.sentences_model import SentencesModel
 from src.services.cabocha_service import CaboChaService
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
