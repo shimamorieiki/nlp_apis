@@ -33,8 +33,10 @@ class CaboChaService:
                 # EOS要素or空要素のときは何もしない
                 continue
 
-            if parsed_items[0] == "*":
+            if parsed_items[0] == "*" and len(parsed_items.split(" ")) == 5:
                 # "* 3 4D 0/0 1.985818"
+                # 先頭文字が「*」であることのみを手がかりとすると
+                # 文中に*が使用されている場合にエラーが発生する
                 bnst_info = parsed_items.split(" ")
                 bnst_id = bnst_info[1]
                 bnst_parent_id = bnst_info[2][:-1]
